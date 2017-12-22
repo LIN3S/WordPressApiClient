@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace WordPressApiClient;
+namespace LIN3S\WordPressApiClient;
 
 use \GuzzleHttp\Client as GuzzleClient;
 
