@@ -26,21 +26,10 @@ class Client
         $this->domain = $domain;
     }
 
-    public function getResourceBySlug(string $resourceType, string $slug) : ?array
+    public function getResource(string $resourceType, string $lang) : ?array
     {
-        $response = $this->client->request('GET',
-            sprintf($this->domain . '/wp-json/wp/v2/%s?slug=%s', $resourceType, $slug)
-        );
-
-        $resources = json_decode($response->getBody()->getContents(), true);
-
-        return 0 === count($resources) ? null : current($resources);
-    }
-
-    public function getResourcesByQuery(string $resourceType, string $query) : ?array
-    {
-        $response = $this->client->request('GET',
-            sprintf($this->domain . '/wp-json/wp/v2/%s?%s', $resourceType, $query)
+        $response = $this->client->request( 'GET',
+            sprintf($this->domain . '/wp-json/wp/v2/%s?lang=%s&_embed', $resourceType, $lang)
         );
 
         $resources = json_decode($response->getBody()->getContents(), true);
@@ -48,10 +37,32 @@ class Client
         return $resources;
     }
 
-    public function getResourceById(string $resourceType, string $id) : ?array
+    public function getResourceBySlug(string $resourceType, string $slug, string $lang) : ?array
     {
         $response = $this->client->request('GET',
-            sprintf($this->domain . '/wp-json/wp/v2/%s/%s', $resourceType, $id)
+            sprintf($this->domain . '/wp-json/wp/v2/%s?slug=%s&lang=%s&_embed', $resourceType, $slug, $lang)
+        );
+
+        $resources = json_decode($response->getBody()->getContents(), true);
+
+        return 0 === count($resources) ? null : current($resources);
+    }
+
+    public function getResourcesByQuery(string $resourceType, string $query, string $lang) : ?array
+    {
+        $response = $this->client->request('GET',
+            sprintf($this->domain . '/wp-json/wp/v2/%s?%s&lang=%s&_embed', $resourceType, $query, $lang)
+        );
+
+        $resources = json_decode($response->getBody()->getContents(), true);
+
+        return $resources;
+    }
+
+    public function getResourceById(string $resourceType, string $id, string $lang) : ?array
+    {
+        $response = $this->client->request('GET',
+            sprintf($this->domain . '/wp-json/wp/v2/%s/%s?lang=%s', $resourceType, $id, $lang)
         );
 
         $resources = json_decode($response->getBody()->getContents(), true);
@@ -59,4 +70,3 @@ class Client
         return 0 === count($resources) ? null : current($resources);
     }
 }
-
