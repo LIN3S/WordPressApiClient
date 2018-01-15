@@ -26,7 +26,7 @@ class Client
         $this->domain = $domain;
     }
 
-    public function getResource(string $resourceType, string $lang) : ?array
+    public function getResources(string $resourceType, string $lang = null) : ?array
     {
         $response = $this->client->request( 'GET',
             sprintf($this->domain . '/wp-json/wp/v2/%s?lang=%s&_embed', $resourceType, $lang)
@@ -37,7 +37,7 @@ class Client
         return $resources;
     }
 
-    public function getResourceBySlug(string $resourceType, string $slug, string $lang) : ?array
+    public function getResourceBySlug(string $resourceType, string $slug, string $lang = null) : ?array
     {
         $response = $this->client->request('GET',
             sprintf($this->domain . '/wp-json/wp/v2/%s?slug=%s&lang=%s&_embed', $resourceType, $slug, $lang)
@@ -48,7 +48,7 @@ class Client
         return 0 === count($resources) ? null : current($resources);
     }
 
-    public function getResourcesByQuery(string $resourceType, string $query, string $lang) : ?array
+    public function getResourcesByQuery(string $resourceType, string $query, string $lang = null) : ?array
     {
         $response = $this->client->request('GET',
             sprintf($this->domain . '/wp-json/wp/v2/%s?%s&lang=%s&_embed', $resourceType, $query, $lang)
@@ -59,7 +59,7 @@ class Client
         return $resources;
     }
 
-    public function getResourceById(string $resourceType, string $id, string $lang) : ?array
+    public function getResourceById(string $resourceType, string $id, string $lang = null) : ?array
     {
         $response = $this->client->request('GET',
             sprintf($this->domain . '/wp-json/wp/v2/%s/%s?lang=%s', $resourceType, $id, $lang)
