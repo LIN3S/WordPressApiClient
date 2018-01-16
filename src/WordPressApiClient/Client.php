@@ -28,9 +28,15 @@ class Client
 
     public function getResources(string $resourceType, string $lang = null) : ?array
     {
-        $response = $this->client->request( 'GET',
-            sprintf($this->domain . '/wp-json/wp/v2/%s?lang=%s&_embed', $resourceType, $lang)
-        );
+        if(!empty($lang)) {
+            $response = $this->client->request('GET',
+                sprintf($this->domain . '/wp-json/wp/v2/%s?lang=%s&_embed', $resourceType, $lang)
+            );
+        } else {
+            $response = $this->client->request('GET',
+                sprintf($this->domain . '/wp-json/wp/v2/%s?_embed', $resourceType)
+            );
+        }
 
         $resources = json_decode($response->getBody()->getContents(), true);
 
@@ -39,9 +45,15 @@ class Client
 
     public function getResourceBySlug(string $resourceType, string $slug, string $lang = null) : ?array
     {
-        $response = $this->client->request('GET',
-            sprintf($this->domain . '/wp-json/wp/v2/%s?slug=%s&lang=%s&_embed', $resourceType, $slug, $lang)
-        );
+        if(!empty($lang)) {
+            $response = $this->client->request('GET',
+                sprintf($this->domain . '/wp-json/wp/v2/%s?slug=%s&lang=%s&_embed', $resourceType, $slug, $lang)
+            );
+        } else {
+            $response = $this->client->request('GET',
+                sprintf($this->domain . '/wp-json/wp/v2/%s?slug=%s&_embed', $resourceType, $slug)
+            );
+        }
 
         $resources = json_decode($response->getBody()->getContents(), true);
 
@@ -50,9 +62,15 @@ class Client
 
     public function getResourcesByQuery(string $resourceType, string $query, string $lang = null) : ?array
     {
-        $response = $this->client->request('GET',
-            sprintf($this->domain . '/wp-json/wp/v2/%s?%s&lang=%s&_embed', $resourceType, $query, $lang)
-        );
+        if(!empty($lang)) {
+            $response = $this->client->request('GET',
+                sprintf($this->domain . '/wp-json/wp/v2/%s?%s&lang=%s&_embed', $resourceType, $query, $lang)
+            );
+        } else {
+            $response = $this->client->request('GET',
+                sprintf($this->domain . '/wp-json/wp/v2/%s?%s&_embed', $resourceType, $query)
+            );
+        }
 
         $resources = json_decode($response->getBody()->getContents(), true);
 
@@ -61,9 +79,15 @@ class Client
 
     public function getResourceById(string $resourceType, string $id, string $lang = null) : ?array
     {
-        $response = $this->client->request('GET',
-            sprintf($this->domain . '/wp-json/wp/v2/%s/%s?lang=%s', $resourceType, $id, $lang)
-        );
+        if(!empty($lang)) {
+            $response = $this->client->request('GET',
+                sprintf($this->domain . '/wp-json/wp/v2/%s/%s?lang=%s', $resourceType, $id, $lang)
+            );
+        } else {
+            $response = $this->client->request('GET',
+                sprintf($this->domain . '/wp-json/wp/v2/%s/%s', $resourceType, $id)
+            );
+        }
 
         $resources = json_decode($response->getBody()->getContents(), true);
 
