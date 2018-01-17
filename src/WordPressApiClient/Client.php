@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace LIN3S\WordPressApiClient;
 
@@ -36,9 +36,7 @@ class Client
 
         $response = $this->client->request('GET', sprintf($this->domain . $path, $resourceType));
 
-        $resources = json_decode($response->getBody()->getContents(), true);
-
-        return $resources;
+        return json_decode($response->getBody()->getContents(), true);
     }
 
     public function getResourceBySlug(string $resourceType, string $slug, string $lang = null) : ?array
@@ -66,9 +64,7 @@ class Client
 
         $response = $this->client->request('GET', sprintf($this->domain . $path, $resourceType, $query));
 
-        $resources = json_decode($response->getBody()->getContents(), true);
-
-        return $resources;
+        return json_decode($response->getBody()->getContents(), true);
     }
 
     public function getResourceById(string $resourceType, string $id, string $lang = null) : ?array
