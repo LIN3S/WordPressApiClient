@@ -26,7 +26,7 @@ class Client
         $this->domain = $domain;
     }
 
-    public function getResources(string $resourceType, string $lang = null) : ?array
+    public function getResources(string $resourceType, string $lang = null)
     {
         $path = '/wp-json/wp/v2/%s?_embed';
 
@@ -39,7 +39,7 @@ class Client
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function getResourceBySlug(string $resourceType, string $slug, string $lang = null) : ?array
+    public function getResourceBySlug(string $resourceType, string $slug, string $lang = null)
     {
         $path = '/wp-json/wp/v2/%s?slug=%s&_embed';
 
@@ -54,7 +54,7 @@ class Client
         return 0 === count($resources) ? null : current($resources);
     }
 
-    public function getResourcesByQuery(string $resourceType, string $query, string $lang = null) : ?array
+    public function getResourcesByQuery(string $resourceType, string $query, string $lang = null)
     {
         $path = '/wp-json/wp/v2/%s?%s&_embed';
 
@@ -67,7 +67,7 @@ class Client
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function getResourceById(string $resourceType, string $id, string $lang = null) : ?array
+    public function getResourceById(string $resourceType, string $id, string $lang = null)
     {
         $path = '/wp-json/wp/v2/%s/%s';
 
