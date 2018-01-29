@@ -26,15 +26,20 @@ class Client
         $this->domain = $domain;
     }
 
-    public function getResources(string $resourceType, string $lang = null)
+    public function getResources(string $resourceType, string $lang = null, int $perPage = 10, int $page = 1)
     {
-        $path = '/wp-json/wp/v2/%s?_embed';
+        $path = '/wp-json/wp/v2/%s?per_page=%d&page=%d&_embed';
 
         if ($lang) {
             $path .= '&lang=' . $lang;
         }
 
-        $response = $this->client->request('GET', sprintf($this->domain . $path, $resourceType));
+        $response = $this->client->request('GET', sprintf(
+            $this->domain . $path,
+            $resourceType,
+            $perPage,
+            $page
+        ));
 
         return json_decode($response->getBody()->getContents(), true);
     }
