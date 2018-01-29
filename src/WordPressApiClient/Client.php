@@ -28,7 +28,7 @@ class Client
 
     public function getResources(string $resourceType, string $lang = null)
     {
-        $path = '/wp-json/wp/v2/%s?_embed';
+        $path = '/wp-json/wp/v2/%s?per_page=100&_embed';
 
         if ($lang) {
             $path .= '&lang=' . $lang;
