@@ -44,6 +44,23 @@ class Client
         return json_decode($response->getBody()->getContents(), true);
     }
 
+    public function countResources(string $resourceType, string $lang = null, int $perPage = 10)
+    {
+        $path = '/wp-json/wp/v2/%s?per_page=%d';
+
+        if ($lang) {
+            $path .= '&lang=' . $lang;
+        }
+
+        $response = $this->client->request('GET', sprintf(
+            $this->domain . $path,
+            $resourceType,
+            $perPage
+        ));
+
+        return $response->getHeader('X-WP-TotalPages')[0];
+    }
+
     public function getResourceBySlug(string $resourceType, string $slug, string $lang = null)
     {
         $path = '/wp-json/wp/v2/%s?slug=%s&_embed';
@@ -85,5 +102,18 @@ class Client
         $resources = json_decode($response->getBody()->getContents(), true);
 
         return 0 === count($resources) ? null : current($resources);
+    }
+
+    public function getSidebarById(string $resourceType, string $id, string $lang = null)
+    {
+        $path = '/wp-json/wp-rest-api-sidebars/v1/%s/%s';
+
+        if ($lang) {
+            $path .= '?lang=' . $lang;
+        }
+
+        $response = $this->client->request('GET', sprintf($this->domain . $path, $resourceType, $id));
+
+        return json_decode($response->getBody()->getContents(), true);
     }
 }
