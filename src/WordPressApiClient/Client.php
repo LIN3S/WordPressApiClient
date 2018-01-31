@@ -61,6 +61,24 @@ class Client
         return $response->getHeader('X-WP-TotalPages')[0];
     }
 
+    public function countResourcesByQuery(string $resourceType, string $query, string $lang = null, int $perPage = 10, int $page = 1)
+    {
+        $path = '/wp-json/wp/v2/%s?%s&per_page=%d&page=%d&_embed';
+
+        if ($lang) {
+            $path .= '&lang=' . $lang;
+        }
+
+        $response = $this->client->request('GET', sprintf(
+            $this->domain . $path,
+            $resourceType,
+            $query,
+            $perPage,
+            $page));
+
+        return $response->getHeader('X-WP-TotalPages')[0];
+    }
+
     public function getResourceBySlug(string $resourceType, string $slug, string $lang = null)
     {
         $path = '/wp-json/wp/v2/%s?slug=%s&_embed';
@@ -76,15 +94,21 @@ class Client
         return 0 === count($resources) ? null : current($resources);
     }
 
-    public function getResourcesByQuery(string $resourceType, string $query, string $lang = null)
+    public function getResourcesByQuery(string $resourceType, string $query, string $lang = null, int $perPage = 10, int $page = 1)
     {
-        $path = '/wp-json/wp/v2/%s?%s&_embed';
+        $path = '/wp-json/wp/v2/%s?%s&per_page=%d&page=%d&_embed';
 
         if ($lang) {
             $path .= '&lang=' . $lang;
         }
 
-        $response = $this->client->request('GET', sprintf($this->domain . $path, $resourceType, $query));
+        $response = $this->client->request('GET', sprintf(
+            $this->domain . $path,
+            $resourceType,
+            $query,
+            $perPage,
+            $page
+        ));
 
         return json_decode($response->getBody()->getContents(), true);
     }
