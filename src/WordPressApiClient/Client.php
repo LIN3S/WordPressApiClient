@@ -123,9 +123,7 @@ class Client
 
         $response = $this->client->request('GET', sprintf($this->domain . $path, $resourceType, $id));
 
-        $resources = json_decode($response->getBody()->getContents(), true);
-
-        return 0 === count($resources) ? null : current($resources);
+        return json_decode($response->getBody()->getContents(), true);
     }
 
     public function getSidebarById(string $resourceType, string $id, string $lang = null)
