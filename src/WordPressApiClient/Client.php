@@ -19,11 +19,15 @@ class Client
 {
     private $client;
     private $domain;
+    private $applicationPassword;
+    private $applicationUser;
 
-    public function __construct(GuzzleClient $client, string $domain)
+    public function __construct(GuzzleClient $client, string $domain, $applicationUser, $applicationPassword)
     {
         $this->client = $client;
         $this->domain = $domain;
+        $this->applicationPassword = $applicationPassword;
+        $this->applicationUser = $applicationUser;
     }
 
     public function getResources(string $resourceType, string $lang = null, int $perPage = 10, int $page = 1)
@@ -113,15 +117,20 @@ class Client
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function getResourceById(string $resourceType, string $id, string $lang = null)
+    public function getResourceById(string $resourceType, string $id, string $lang = null, $secure = false)
     {
-        $path = '/wp-json/wp/v2/%s/%s';
+        $headers = false === $secure ? [] : $this->getAuthHeader();
+
+        $path = '/wp-json/wp/v2/%s/%s?_embed';
 
         if ($lang) {
-            $path .= '?lang=' . $lang;
+            $path .= '&lang=' . $lang;
         }
 
-        $response = $this->client->request('GET', sprintf($this->domain . $path, $resourceType, $id));
+        $response = $this->client->request(
+            'GET',
+            sprintf($this->domain . $path, $resourceType, $id),
+            $headers);
 
         return json_decode($response->getBody()->getContents(), true);
     }
@@ -137,5 +146,10 @@ class Client
         $response = $this->client->request('GET', sprintf($this->domain . $path, $resourceType, $id));
 
         return json_decode($response->getBody()->getContents(), true);
+    }
+
+    private function getAuthHeader()
+    {
+        return $headers = ['auth' => [$this->applicationUser, $this->applicationPassword]];
     }
 }
