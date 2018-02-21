@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace LIN3S\WordPressApiClient;
 
@@ -120,7 +120,7 @@ class Client
 
     public function getResourceById(string $resourceType, string $id, string $lang = null, $secure = false)
     {
-        $headers = false === $secure ? [] : $this->getAuthHeader();
+        $headers = $secure ? $this->getAuthHeader() : [];
 
         $path = '/wp-json/wp/v2/%s/%s?_embed';
 
