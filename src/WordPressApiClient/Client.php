@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace LIN3S\WordPressApiClient;
 
 use \GuzzleHttp\Client as GuzzleClient;
+use LIN3S\WordPressApiClient\Exception\AuthorizationNotConfigured;
 
 class Client
 {
@@ -22,7 +23,7 @@ class Client
     private $applicationPassword;
     private $applicationUser;
 
-    public function __construct(GuzzleClient $client, string $domain, $applicationUser, $applicationPassword)
+    public function __construct(GuzzleClient $client, string $domain, string $applicationUser = null, string $applicationPassword = null)
     {
         $this->client = $client;
         $this->domain = $domain;
@@ -150,6 +151,10 @@ class Client
 
     private function getAuthHeader()
     {
+        if (!$this->applicationUser || !$this->applicationPassword) {
+            throw new AuthorizationNotConfigured();
+        }
+
         return $headers = ['auth' => [$this->applicationUser, $this->applicationPassword]];
     }
 }
