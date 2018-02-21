@@ -63,7 +63,7 @@ class Client
             $perPage
         ));
 
-        return $response->getHeader('X-WP-TotalPages')[0];
+        return $response->getHeader('X-WP-Total')[0];
     }
 
     public function countResourcesByQuery(string $resourceType, string $query, string $lang = null, int $perPage = 10, int $page = 1)
@@ -81,7 +81,7 @@ class Client
             $perPage,
             $page));
 
-        return $response->getHeader('X-WP-TotalPages')[0];
+        return $response->getHeader('X-WP-Total')[0];
     }
 
     public function getResourceBySlug(string $resourceType, string $slug, string $lang = null)
