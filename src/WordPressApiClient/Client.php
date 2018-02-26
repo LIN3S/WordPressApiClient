@@ -149,6 +149,21 @@ class Client
         return json_decode($response->getBody()->getContents(), true);
     }
 
+    public function createComment(string $authorEmail = '', string $authorName = '', string $content = '', string $parentId = '0', string $postId = '0', $secure = false)
+    {
+
+        $headers = $secure ? $this->getAuthHeader() : [];
+
+        $path = '/wp-json/wp/v2/comments?author_email=%s&author_name=%s&content=%s&parent=%s&post=%s';
+
+        $response = $this->client->request(
+            'POST',
+            sprintf($this->domain . $path, $authorEmail, $authorName, $content, $parentId, $postId),
+            $headers);
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
     private function getAuthHeader()
     {
         if (!$this->applicationUser || !$this->applicationPassword) {
