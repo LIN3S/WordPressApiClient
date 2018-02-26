@@ -151,7 +151,6 @@ class Client
 
     public function createComment(string $authorEmail = '', string $authorName = '', string $content = '', string $parentId = '0', string $postId = '0', $secure = false)
     {
-
         $headers = $secure ? $this->getAuthHeader() : [];
 
         $path = '/wp-json/wp/v2/comments?author_email=%s&author_name=%s&content=%s&parent=%s&post=%s';
