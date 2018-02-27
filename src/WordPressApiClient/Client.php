@@ -149,15 +149,15 @@ class Client
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function createComment(string $authorEmail = '', string $authorName = '', string $content = '', string $parentId = '0', string $postId = '0', $secure = false)
+    public function createComment(string $authorEmail = '', string $authorName = '', string $content = '', string $parentId = '0', string $postId = '0', string $status = 'approve', $secure = false)
     {
         $headers = $secure ? $this->getAuthHeader() : [];
 
-        $path = '/wp-json/wp/v2/comments?author_email=%s&author_name=%s&content=%s&parent=%s&post=%s';
+        $path = '/wp-json/wp/v2/comments?author_email=%s&author_name=%s&content=%s&parent=%s&post=%s&status=%s';
 
         $response = $this->client->request(
             'POST',
-            sprintf($this->domain . $path, $authorEmail, $authorName, $content, $parentId, $postId),
+            sprintf($this->domain . $path, $authorEmail, $authorName, $content, $parentId, $postId, $status),
             $headers);
 
         return json_decode($response->getBody()->getContents(), true);
