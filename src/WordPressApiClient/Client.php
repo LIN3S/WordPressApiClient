@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace LIN3S\WordPressApiClient;
 
-use \GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Client as GuzzleClient;
 use LIN3S\WordPressApiClient\Exception\AuthorizationNotConfigured;
 
 class Client
@@ -23,8 +23,12 @@ class Client
     private $applicationPassword;
     private $applicationUser;
 
-    public function __construct(GuzzleClient $client, string $domain, string $applicationUser = null, string $applicationPassword = null)
-    {
+    public function __construct(
+        GuzzleClient $client,
+        string $domain,
+        string $applicationUser = null,
+        string $applicationPassword = null
+    ) {
         $this->client = $client;
         $this->domain = $domain;
         $this->applicationPassword = $applicationPassword;
@@ -66,8 +70,13 @@ class Client
         return $response->getHeader('X-WP-Total')[0];
     }
 
-    public function countResourcesByQuery(string $resourceType, string $query, string $lang = null, int $perPage = 10, int $page = 1)
-    {
+    public function countResourcesByQuery(
+        string $resourceType,
+        string $query,
+        string $lang = null,
+        int $perPage = 10,
+        int $page = 1
+    ) {
         $path = '/wp-json/wp/v2/%s?%s&per_page=%d&page=%d&_embed';
 
         if ($lang) {
@@ -99,8 +108,13 @@ class Client
         return 0 === count($resources) ? null : current($resources);
     }
 
-    public function getResourcesByQuery(string $resourceType, string $query, string $lang = null, int $perPage = 10, int $page = 1)
-    {
+    public function getResourcesByQuery(
+        string $resourceType,
+        string $query,
+        string $lang = null,
+        int $perPage = 10,
+        int $page = 1
+    ) {
         $path = '/wp-json/wp/v2/%s?%s&per_page=%d&page=%d&_embed';
 
         if ($lang) {
@@ -118,8 +132,12 @@ class Client
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function getResourceById(string $resourceType, string $id, string $lang = null, $secure = false)
-    {
+    public function getResourceById(
+        string $resourceType,
+        string $id,
+        string $lang = null,
+        $secure = false
+    ) {
         $headers = $secure ? $this->getAuthHeader() : [];
 
         $path = '/wp-json/wp/v2/%s/%s?_embed';
@@ -149,8 +167,15 @@ class Client
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function createComment(string $authorEmail = '', string $authorName = '', string $content = '', string $parentId = '0', string $postId = '0', string $status = 'approve', $secure = false)
-    {
+    public function createComment(
+        string $authorEmail = '',
+        string $authorName = '',
+        string $content = '',
+        string $parentId = '0',
+        string $postId = '0',
+        string $status = 'approve',
+        $secure = false
+    ) {
         $headers = $secure ? $this->getAuthHeader() : [];
 
         $path = '/wp-json/wp/v2/comments?author_email=%s&author_name=%s&content=%s&parent=%s&post=%s&status=%s';
