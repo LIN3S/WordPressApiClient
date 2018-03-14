@@ -36,7 +36,7 @@ class Client
         $path = '/wp-json/wp/v2/%s?per_page=%d&page=%d&_embed';
 
         if ($lang) {
-            $path .= '&lang=' . $lang;
+            $path = '/' . $lang . $path;
         }
 
         $response = $this->client->request('GET', sprintf(
@@ -54,7 +54,7 @@ class Client
         $path = '/wp-json/wp/v2/%s?per_page=%d';
 
         if ($lang) {
-            $path .= '&lang=' . $lang;
+            $path = '/' . $lang . $path;
         }
 
         $response = $this->client->request('GET', sprintf(
@@ -71,7 +71,7 @@ class Client
         $path = '/wp-json/wp/v2/%s?%s&per_page=%d&page=%d&_embed';
 
         if ($lang) {
-            $path .= '&lang=' . $lang;
+            $path = '/' . $lang . $path;
         }
 
         $response = $this->client->request('GET', sprintf(
@@ -89,7 +89,7 @@ class Client
         $path = '/wp-json/wp/v2/%s?slug=%s&_embed';
 
         if ($lang) {
-            $path .= '&lang=' . $lang;
+            $path = '/' . $lang . $path;
         }
 
         $response = $this->client->request('GET', sprintf($this->domain . $path, $resourceType, $slug));
@@ -104,7 +104,7 @@ class Client
         $path = '/wp-json/wp/v2/%s?%s&per_page=%d&page=%d&_embed';
 
         if ($lang) {
-            $path .= '&lang=' . $lang;
+            $path = '/' . $lang . $path;
         }
 
         $response = $this->client->request('GET', sprintf(
@@ -125,7 +125,7 @@ class Client
         $path = '/wp-json/wp/v2/%s/%s?_embed';
 
         if ($lang) {
-            $path .= '&lang=' . $lang;
+            $path = '/' . $lang . $path;
         }
 
         $response = $this->client->request(
@@ -141,7 +141,7 @@ class Client
         $path = '/wp-json/wp-rest-api-sidebars/v1/%s/%s';
 
         if ($lang) {
-            $path .= '?lang=' . $lang;
+            $path = '/' . $lang . $path;
         }
 
         $response = $this->client->request('GET', sprintf($this->domain . $path, $resourceType, $id));
