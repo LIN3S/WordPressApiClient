@@ -196,4 +196,23 @@ class Client
 
         return $headers = ['auth' => [$this->applicationUser, $this->applicationPassword]];
     }
+
+    public function deleteResource(string $resourceType, string $lang, string $identifier)
+    {
+        $headers = $this->getAuthHeader();
+        $path = '/wp-json/wp/v2/%s/%s';
+
+        if ($lang) {
+            $path = '/' . $lang . $path;
+        }
+
+        $response = $this->client->request(
+            'DELETE',
+            sprintf($this->domain . $path, $resourceType, $identifier),
+            $headers
+        );
+        if (($errorCode = $response->getStatusCode()) !== 200) {
+            throw new DeleteRequestFailed("$errorCode returned by the server");
+        }
+    }
 }
